@@ -47,8 +47,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_DESCRIPTION, task.description);
-        values.put(COLUMN_MENU, task.menu == null ? "[]" : task.menu.toString());
-        values.put(COLUMN_LOCATION, task.location == null ? "{}" : task.location.toString());
+        values.put(COLUMN_MENU,  task.menu.toString());
+        values.put(COLUMN_LOCATION, task.location.toString());
 
         db.insert(TABLE_TASK, null, values);
         db.close();
@@ -125,20 +125,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void recreateTaskTable(){
-        final SQLiteDatabase db = getWritableDatabase();
-        try{
-            //delete table
-            db.execSQL("DROP TABLE " + TABLE_TASK + ";");
-            //recreate table
-            db.execSQL(SQL_CREATE_TABLE);
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally{
-            if(db != null){
-                db.close();
-            }
-        }
-    }
+
 
 }

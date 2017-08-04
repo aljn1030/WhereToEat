@@ -44,7 +44,7 @@ public class StoreDetailActivity extends AppCompatActivity {
 
         final Bundle bundle = getIntent().getExtras();
 
-        if(bundle != null && bundle.getSerializable("task") != null){
+        if(bundle.getSerializable("task") != null){
             task = (Task) bundle.getSerializable("task");
         }
 
@@ -53,7 +53,7 @@ public class StoreDetailActivity extends AppCompatActivity {
         }
 
         tvStoreName.setText(task.description);
-        if(task.menu != null && task.menu.list != null){
+        if(task.menu.list != null){
             menuList.setAdapter(new MenuListAdapter(this, R.layout.menu_item, task.menu.list));
         }
     }

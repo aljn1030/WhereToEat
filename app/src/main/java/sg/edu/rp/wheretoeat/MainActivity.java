@@ -1,13 +1,18 @@
 package sg.edu.rp.wheretoeat;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +25,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Resources resources = getResources();// 获得res资源对象
+
+        Configuration config = resources.getConfiguration();// 获得设置对象
+
+        DisplayMetrics dm = resources.getDisplayMetrics();// 获得屏幕参数：主要是分辨率，像素等。
+
+        String lang = PrefUtils.getLang(this);
+
+        if (!lang.equals("")) {
+
+            Locale locale = new Locale(lang);
+            Locale.setDefault(locale);
+            config.locale = locale;
+
+            resources.updateConfiguration(config, dm);
+
+        }
 
         lvResult = (ListView) findViewById(R.id.lv);
         showRestaurants();
@@ -48,6 +71,36 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.english) {
+
+            PrefUtils.setLang(this, Language.LANG_EN);
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+
+        } else if (id == R.id.chinese) {
+
+            PrefUtils.setLang(this, Language.LANG_ZH);
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.options, menu);
+        return true;
+
+
+    }
+
 
     private void showRestaurants() {
         final DBHelper db = new DBHelper(MainActivity.this);
@@ -111,7 +164,11 @@ public class MainActivity extends AppCompatActivity {
         db.close();
 
 
+
     }
+
+
+
 
 
 

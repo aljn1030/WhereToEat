@@ -16,7 +16,7 @@ public class Menu implements Serializable{
     public String toString() {
         JSONArray jsonArray = new JSONArray();
 
-        if(list != null && list.size() != 0){
+        if(list != null){
             for(String s : list){
                 jsonArray.put(s);
             }
